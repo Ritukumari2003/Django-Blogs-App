@@ -22,11 +22,27 @@ from django.conf import settings
 from blogs import views as BlogsView
 
 urlpatterns = [
+    # admin url 
     path('admin/', admin.site.urls),
+
+    # home url 
     path('', views.home, name='home'),
+
+    # navbar-category url 
     path('category/',include('blogs.urls')),
-    path('<slug:slug>/', BlogsView.blogs, name='blogs'),
+
+    # specific blog endpoint 
+    path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
 
     # search endpoint 
     path('blogs/search/', BlogsView.search, name='search'),
+
+    # register endpoint
+    path('register/', views.register, name='register'),
+
+    # login endpoint
+    path('login/', views.login, name='login'),
+
+    # logout endpoint
+    path('logout/', views.logout, name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
