@@ -1,17 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.functions import Lower
 
 # Create your models here.
 class Category(models.Model):
-    category_name = models.CharField(max_length=50, unique=True)
+    category_name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
+        constraints = [
+            models.UniqueConstraint(
+                Lower('category_name'),
+                name='unique_category_name_ci',
+                violation_error_message="This category already exists. Please choose a different name."
+            )
+        ]
 
     def __str__(self):
-        return self.category_name
+        return self.category_name.title()
     
 STATUS_CHOICES = (
     ('Draft','Draft'),

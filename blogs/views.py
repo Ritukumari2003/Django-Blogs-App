@@ -1,5 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from .models import Blog, Category, Comment
 from django.db.models import Q
 
