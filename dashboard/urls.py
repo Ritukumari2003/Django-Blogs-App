@@ -22,4 +22,7 @@ urlpatterns = [
     path('users/add/', views.add_user, name='add_user'),
     path('users/edit/<int:pk>/', views.edit_user, name='edit_user'),
     path('users/delete/<int:pk>/', views.delete_user, name='delete_user'),
+
+    # logout
+    path('dashboard_logout/', views.dashboard_logout, name='dashboard_logout'),
 ]

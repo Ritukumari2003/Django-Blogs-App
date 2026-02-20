@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from .models import Blog, Category, Comment
 from django.db.models import Q
+from django.shortcuts import redirect
 
 # Create your views here.
 def posts_by_category(request, category_id):
@@ -44,6 +45,17 @@ def blogs(request, slug):
         'comment_count': comment_count,
     }
     return render(request, 'blogs.html', context)
+
+def delete_comment(request, comment_id):
+    if request.method == "POST":
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        if request.user == comment.user:
+            slug = comment.blog.slug
+            comment.delete()
+            return redirect('blogs', slug=slug)
+
+    return redirect('/')
 
 def search(request):
     keyword = request.GET.get('keyword')

@@ -34,6 +34,9 @@ urlpatterns = [
     # specific blog endpoint 
     path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
 
+    # deleting the comment in a blog 
+    path('delete-comment/<int:comment_id>/', BlogsView.delete_comment, name='delete_comment'),
+
     # search endpoint 
     path('blogs/search/', BlogsView.search, name='search'),
 

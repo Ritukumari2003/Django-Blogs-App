@@ -16,6 +16,12 @@
                 {% csrf_token %}
                 {{ form | crispy }}
                 <button type="submit" class="btn btn-warning">Submit</button>
+                <p></p>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
         </form>
         <br>
     </div>

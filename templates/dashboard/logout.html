@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <!-- Left Side Bar  -->
+    <!-- import sidebar here  -->
+     {% include 'dashboard/sidebar.html' %}
+
+    <!-- Right Side Bar  -->
+    <div class="card" style="margin: auto;">
+        <div class="card-body">
+            <div class="col-md-9">
+                <p>Are you sure you want to logout??...</p>
+
+                <form method="POST" action="{% url 'dashboard_logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                </form>
+
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

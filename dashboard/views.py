@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import AddUserForm, BlogPostForm, CategoryForm, EditUserForm
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.contrib import auth
+from django.contrib import messages
 
 # Create your views here.
 @login_required(login_url='login')
@@ -43,6 +45,8 @@ def edit_category(request, pk):
         if form.is_valid():
             form.save()
             return redirect('categories')
+        else:
+            messages.error(request, "Category already exists!!...")
     form = CategoryForm(instance=category)
     context = {
         'form': form,
@@ -152,3 +156,10 @@ def delete_user(request, pk):
     user = get_object_or_404(User, pk=pk)
     user.delete()
     return redirect('users') 
+
+def dashboard_logout(request):
+    if request.method == "POST":
+        auth.logout(request)
+        return redirect('home')  # or wherever you want
+
+    return render(request, 'dashboard/logout.html')
