@@ -6,6 +6,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
 @login_required(login_url='login')
@@ -37,7 +38,7 @@ def add_category(request):
         }
     return render(request, 'dashboard/add_category.html', context)
 
-
+@permission_required('blogs.change_category', raise_exception=True)
 def edit_category(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
@@ -54,6 +55,7 @@ def edit_category(request, pk):
     }
     return render(request, 'dashboard/edit_category.html', context)
 
+@permission_required('blogs.delete_category', raise_exception=True)
 def delete_category(request, pk):
     category = get_object_or_404(Category, pk=pk)
     category.delete()

@@ -31,7 +31,7 @@
                 {% for post in posts %}
                 <tr>
                 <th>{{ forloop.counter }}</th>
-                <td>{{ post }}</td>
+                <td><a href="{% url 'blogs' post.slug %}">{{ post }}</a></td>
                 <td>{{ post.category }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.status }}</td>
