@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 @login_required(login_url='login')
@@ -24,6 +25,7 @@ def dashboard(request):
 def categories(request):
     return render(request, 'dashboard/categories.html')
 
+@permission_required('blogs.add_category', raise_exception=True)
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -94,9 +96,14 @@ def add_post(request):
 
 def edit_post(request, pk):
     post = get_object_or_404(Blog, pk=pk)
+    
+    # Allow if admin OR author
+    if not (request.user.has_perm('blogs.change_blog') or post.author == request.user):
+        return HttpResponseForbidden("You are not allowed to edit this post")
+
     if request.method == 'POST':
         form = BlogPostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid:
+        if form.is_valid():
             post = form.save()
             title = form.cleaned_data['title']
             post.slug =slugify(title) + '-' + str(post.id)
@@ -111,6 +118,8 @@ def edit_post(request, pk):
 
 def delete_post(request, pk):
     post = get_object_or_404(Blog, pk=pk)
+    if not (request.user.has_perm('blogs.delete_blog') or post.author == request.user):
+        return HttpResponseForbidden("You are not allowed to delete this post")
     post.delete()
     return redirect('posts') 
 
@@ -165,3 +174,13 @@ def dashboard_logout(request):
         return redirect('home')  # or wherever you want
 
     return render(request, 'dashboard/logout.html')
+
+# Self blog posts crud 
+
+def my_posts(request):
+    posts = Blog.objects.filter(author=request.user)
+    context = {
+        'posts': posts,
+    }
+    return render(request, 'dashboard/my_posts.html', context)
+

@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from .models import Blog, Category, Comment
 from django.db.models import Q
@@ -50,10 +50,12 @@ def delete_comment(request, comment_id):
     if request.method == "POST":
         comment = get_object_or_404(Comment, id=comment_id)
 
-        if request.user == comment.user:
+        if (request.user == comment.user or request.user.is_superuser or request.user.groups.filter(name='Manager').exists()):
             slug = comment.blog.slug
             comment.delete()
             return redirect('blogs', slug=slug)
+
+        return HttpResponseForbidden("You cannot delete this comment")
 
     return redirect('/')
 

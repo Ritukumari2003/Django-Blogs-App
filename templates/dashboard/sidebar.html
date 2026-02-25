@@ -7,7 +7,13 @@
             {% endif %}
             
             <a href="{% url 'categories' %}" class="nav-link text-dark {% if '/categories/' in request.path %}bg-warning{% endif %}">Categories</a>
+
             <a href="{% url 'posts' %}" class="nav-link text-dark {% if '/posts/' in request.path %}bg-warning{% endif %}">Posts</a>
+
+            <a href="{% url 'my_posts' %}" class="nav-link text-dark {% if '/my_posts/' in request.path %}bg-warning{% endif %}">My Posts</a>
+
             <a href="{% url 'dashboard_logout' %}" class="nav-link text-dark {% if '/dashboard_logout/' in request.path %}bg-warning{% endif %}">Logout</a>
+
+
         </div>
     </div>

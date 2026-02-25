@@ -23,6 +23,9 @@ urlpatterns = [
     path('users/edit/<int:pk>/', views.edit_user, name='edit_user'),
     path('users/delete/<int:pk>/', views.delete_user, name='delete_user'),
 
+    # My blogs
+    path('my_posts/', views.my_posts, name='my_posts'),
+
     # logout
     path('dashboard_logout/', views.dashboard_logout, name='dashboard_logout'),
 ]
